@@ -1,7 +1,7 @@
 import { LogtailTransport } from "@logtail/winston";
 import winston from "winston";
 import { Env } from "../config/env.config";
-import { logTail } from "../config/longtail.config";
+import { createLogtail } from "../config/longtail.config";
 
 const { combine, colorize, timestamp, errors, json, printf } = winston.format;
 
@@ -9,7 +9,10 @@ const { combine, colorize, timestamp, errors, json, printf } = winston.format;
 const transports: winston.transport[] = [];
 
 if (Env.NODE_ENV === "production") {
-  transports.push(new LogtailTransport(logTail));
+  const logtail = createLogtail();
+  if (logtail) {
+    transports.push(new LogtailTransport(logtail));
+  }
 }
 
 //

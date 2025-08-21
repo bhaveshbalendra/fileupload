@@ -10,7 +10,7 @@ const swaggerOptions = {
       description: "API documentation for the File Upload Application",
     },
   },
-  apis: ["./src/routes/*.ts"],
+  apis: ["./src/routes/**/*.ts"],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);

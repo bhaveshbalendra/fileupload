@@ -1,68 +1,46 @@
 import jwt, { JwtPayload, SignOptions } from "jsonwebtoken";
 import { Env } from "../config/env.config";
 
-export type AccessTokenPayload = {
-  sub: string;
-  role?: string;
-  sessionId?: string;
+type TimeUnit = "s" | "m" | "h" | "d" | "w" | "y";
+type TimeString = `${number}${TimeUnit}`;
+
+export type AccessPayload = {
+  userId: string;
 };
 
-export type RefreshTokenPayload = {
-  sub: string;
-  sessionId: string;
+type SignOptsAndSecret = SignOptions & {
+  secret: string;
+  expiresIn: TimeString | number;
 };
 
-const commonSignOptions: SignOptions = {
-  issuer: Env.JWT_ISSUER,
-  audience: Env.JWT_AUDIENCE,
+const defaults: SignOptions = {
+  audience: ["user"],
 };
 
-export const signAccessToken = (payload: AccessTokenPayload): string => {
-  const options: SignOptions = {
-    ...commonSignOptions,
-    expiresIn: Env.ACCESS_TOKEN_TTL as unknown as number,
+const accessTokenSignOptions: SignOptsAndSecret = {
+  expiresIn: Env.JWT_EXPIRES_IN as TimeString,
+  secret: Env.JWT_SECRET,
+};
+
+export const signJwtToken = (
+  payload: AccessPayload,
+  options?: SignOptsAndSecret
+) => {
+  const isAccessToken = !options || options === accessTokenSignOptions;
+
+  const { secret, ...opts } = options || accessTokenSignOptions;
+
+  const token = jwt.sign(payload, secret, {
+    ...defaults,
+    ...opts,
+  });
+
+  const expiresAt = isAccessToken
+    ? (jwt.decode(token) as JwtPayload)?.exp! * 1000
+    : undefined;
+
+  return {
+    token,
+    expiresAt,
   };
-  return jwt.sign(
-    payload as unknown as string | Buffer | object,
-    Env.JWT_ACCESS_SECRET as unknown as jwt.Secret,
-    options
-  );
-};
-
-export const signRefreshToken = (payload: RefreshTokenPayload): string => {
-  const options: SignOptions = {
-    ...commonSignOptions,
-    expiresIn: Env.REFRESH_TOKEN_TTL as unknown as number,
-  };
-  return jwt.sign(
-    payload as unknown as string | Buffer | object,
-    Env.JWT_REFRESH_SECRET as unknown as jwt.Secret,
-    options
-  );
-};
-
-export const verifyAccessToken = (token: string): AccessTokenPayload | null => {
-  try {
-    const decoded = jwt.verify(token, Env.JWT_ACCESS_SECRET, {
-      issuer: Env.JWT_ISSUER,
-      audience: Env.JWT_AUDIENCE,
-    }) as JwtPayload;
-    return decoded as unknown as AccessTokenPayload;
-  } catch {
-    return null;
-  }
-};
-
-export const verifyRefreshToken = (
-  token: string
-): RefreshTokenPayload | null => {
-  try {
-    const decoded = jwt.verify(token, Env.JWT_REFRESH_SECRET, {
-      issuer: Env.JWT_ISSUER,
-      audience: Env.JWT_AUDIENCE,
-    }) as JwtPayload;
-    return decoded as unknown as RefreshTokenPayload;
-  } catch {
-    return null;
-  }
 };

@@ -6,6 +6,8 @@ const envConfig = () => ({
   NODE_ENV: getEnv("NODE_ENV", "development"),
   LOG_LEVEL: getEnv("LOG_LEVEL", "info"),
 
+  BASE_PATH: getEnv("BASE_PATH", "/api"),
+
   LOGTAIL_SOURCE_TOKEN: getEnv("LOGTAIL_SOURCE_TOKEN", ""),
   LOGTAIL_INGESTING_HOST: getEnv("LOGTAIL_INGESTING_HOST", ""),
 
@@ -16,12 +18,13 @@ const envConfig = () => ({
   MONGODB_URI: getEnv("MONGODB_URI", ""),
 
   // JWT
-  JWT_ACCESS_SECRET: getEnv("JWT_ACCESS_SECRET", ""),
-  JWT_REFRESH_SECRET: getEnv("JWT_REFRESH_SECRET", ""),
-  JWT_ISSUER: getEnv("JWT_ISSUER", "fileupload"),
-  JWT_AUDIENCE: getEnv("JWT_AUDIENCE", "fileupload.api"),
-  ACCESS_TOKEN_TTL: getEnv("ACCESS_TOKEN_TTL", "15m"),
-  REFRESH_TOKEN_TTL: getEnv("REFRESH_TOKEN_TTL", "7d"),
+  JWT_SECRET: getEnv("JWT_SECRET", "secert_jwt"),
+  JWT_EXPIRES_IN: getEnv("JWT_EXPIRES_IN", "1d"),
+
+  AWS_ACCESS_KEY: getEnv("AWS_ACCESS_KEY", ""),
+  AWS_SECRET_KEY: getEnv("AWS_SECRET_KEY", ""),
+  AWS_REGION: getEnv("AWS_REGION", ""),
+  AWS_S3_BUCKET: getEnv("AWS_S3_BUCKET", ""),
 });
 
 export const Env = envConfig();
