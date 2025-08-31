@@ -1,4 +1,3 @@
-import ResponseMessages from "../config/responseMessage.config";
 import { ErrorCodeEnum, ErrorCodeEnumType } from "../enum/error-code.enum";
 
 /**
@@ -33,7 +32,10 @@ class AppError extends Error {
  * @description Error class for resource not found errors
  */
 class NotFoundError extends AppError {
-  constructor(message: string = ResponseMessages.NOT_FOUND, success = false) {
+  constructor(
+    message: string = ErrorCodeEnum.RESOURCE_NOT_FOUND,
+    success = false
+  ) {
     // Call the parent constructor with the appropriate parameters
     super(message, ErrorCodeEnum.RESOURCE_NOT_FOUND, 404, success);
   }
@@ -46,7 +48,7 @@ class NotFoundError extends AppError {
  */
 class InternalServerError extends AppError {
   constructor(
-    message: string = ResponseMessages.INTERNAL_SERVER_ERROR,
+    message: string = ErrorCodeEnum.INTERNAL_SERVER_ERROR,
     success = false
   ) {
     // Call the parent constructor with the appropriate parameters
@@ -60,7 +62,7 @@ class InternalServerError extends AppError {
  * @description Error class for bad request errors
  */
 class BadRequestException extends AppError {
-  constructor(message: string = ResponseMessages.BAD_REQUEST, success = false) {
+  constructor(message: string = ErrorCodeEnum.BAD_REQUEST, success = false) {
     // Call the parent constructor with the appropriate parameters
     super(message, ErrorCodeEnum.BAD_REQUEST, 400, success);
   }
@@ -72,12 +74,19 @@ class BadRequestException extends AppError {
  * @description Error class for unauthorized access errors
  */
 class UnauthorizedException extends AppError {
+  constructor(message: string = ErrorCodeEnum.UNAUTHORIZED, success = false) {
+    // Call the parent constructor with the appropriate parameters
+    super(message, ErrorCodeEnum.UNAUTHORIZED, 401, success);
+  }
+}
+
+class TooManyRequestsError extends AppError {
   constructor(
-    message: string = ResponseMessages.UNAUTHORIZED,
+    message: string = ErrorCodeEnum.TOO_MANY_REQUESTS,
     success = false
   ) {
     // Call the parent constructor with the appropriate parameters
-    super(message, ErrorCodeEnum.UNAUTHORIZED, 401, success);
+    super(message, ErrorCodeEnum.TOO_MANY_REQUESTS, 429, success);
   }
 }
 
@@ -87,4 +96,5 @@ export {
   InternalServerError,
   NotFoundError,
   UnauthorizedException,
+  TooManyRequestsError,
 };

@@ -1,39 +1,23 @@
 import mongoose, { Model, Schema, Types } from "mongoose";
 import { ErrorCodeEnum } from "../enum/error-code.enum";
+import type {
+  StorageDocument,
+  StorageMetrics,
+  UploadValidation,
+} from "../types/database.types";
 import { AppError, NotFoundError } from "../utils/app-error";
 import { formatBytes } from "../utils/format-byte";
 import FileModel from "./file.model";
 
 export const STORAGE_QUOTA = 2 * 1024 * 1024 * 1024; //2GB
 
-interface IStorage {
-  userId: Types.ObjectId;
-  storageQuota: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface StorgeMetrics {
-  quota: number;
-  usage: number;
-  remaining: number;
-}
-
-interface UploadValidation {
-  allowed: boolean;
-  newUsage: number;
-  remainingAfterUpload: number;
-}
-
 interface StorageStatics {
-  getStorageMetrics(userId: Types.ObjectId): Promise<StorgeMetrics>;
+  getStorageMetrics(userId: Types.ObjectId): Promise<StorageMetrics>;
   validateUpload(
     userId: Types.ObjectId,
     fileSize: number
   ): Promise<UploadValidation>;
 }
-
-interface StorageDocument extends IStorage, Document {}
 
 interface StorageModelType extends Model<StorageDocument>, StorageStatics {}
 

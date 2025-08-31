@@ -23,7 +23,7 @@ const envConfig = () => ({
 
   AWS_ACCESS_KEY: getEnv("AWS_ACCESS_KEY", ""),
   AWS_SECRET_KEY: getEnv("AWS_SECRET_KEY", ""),
-  AWS_REGION: getEnv("AWS_REGION", ""),
+  AWS_REGION: getEnv("AWS_REGION", "us-east-1"),
   AWS_S3_BUCKET: getEnv("AWS_S3_BUCKET", ""),
 });
 

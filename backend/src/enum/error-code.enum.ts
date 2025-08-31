@@ -21,6 +21,9 @@ export const ErrorCodeEnum = {
   BAD_REQUEST: "BAD_REQUEST",
   UNAUTHORIZED: "UNAUTHORIZED",
 
+  // Rate Limiting Errors
+  TOO_MANY_REQUESTS: "TOO_MANY_REQUESTS",
+
   // System Errors
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
 } as const;

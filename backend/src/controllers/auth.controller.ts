@@ -3,13 +3,11 @@ import asyncHandler from "express-async-handler";
 import { HTTPSTATUS } from "../config/http.config";
 
 import { loginService, registerService } from "../services/auth.service";
-import { loginSchema, registerSchema } from "../validators/auth.validator";
 
 export const registerController = asyncHandler(
   async (req: Request, res: Response) => {
-    const body = registerSchema.parse(req.body);
-
-    await registerService(body);
+    // Body already validated by middleware
+    await registerService(req.body);
 
     res.status(HTTPSTATUS.CREATED).json({
       message: "User created successfully",
@@ -19,9 +17,8 @@ export const registerController = asyncHandler(
 
 export const loginController = asyncHandler(
   async (req: Request, res: Response) => {
-    const body = loginSchema.parse(req.body);
-
-    const result = await loginService(body);
+    // Body already validated by middleware
+    const result = await loginService(req.body);
 
     res.status(HTTPSTATUS.CREATED).json({
       message: "User logged in successfully",

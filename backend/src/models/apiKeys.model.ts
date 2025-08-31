@@ -1,15 +1,5 @@
-import mongoose from 'mongoose';
-import { Schema, Types, model, Document, Model } from 'mongoose';
-
-export interface ApiKeyDocument extends Document {
-  userId: Types.ObjectId;
-  name: string;
-  displayKey: string;
-  hashedKey: string;
-  createdAt: Date;
-  updatedAt: Date;
-  lastUsedAt?: Date;
-}
+import mongoose, { Document, Model, Schema, Types, model } from "mongoose";
+import type { ApiKeyDocument } from "../types/database.types";
 
 interface ApiKeyModelType extends Model<ApiKeyDocument> {
   updateLastUsedAt(hashedKey: string): Promise<void>;
@@ -19,7 +9,7 @@ const ApiKeySchema = new Schema<ApiKeyDocument, ApiKeyModelType>(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     name: { type: String, required: true },
@@ -32,18 +22,18 @@ const ApiKeySchema = new Schema<ApiKeyDocument, ApiKeyModelType>(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 ApiKeySchema.statics.updateLastUsedAt = async function (
-  hashedKey: string,
+  hashedKey: string
 ): Promise<void> {
   await this.updateOne({ hashedKey }, { lastUsedAt: new Date() });
 };
 
 const ApiKeyModel = mongoose.model<ApiKeyDocument, ApiKeyModelType>(
-  'ApiKey',
-  ApiKeySchema,
+  "ApiKey",
+  ApiKeySchema
 );
 
 export default ApiKeyModel;

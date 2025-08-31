@@ -1,15 +1,12 @@
 import mongoose from "mongoose";
 import StorageModel from "../models/storage.model";
 import UserModel from "../models/user.model";
+import type { LoginRequest, RegisterRequest } from "../types/auth.types";
 import { AppError } from "../utils/app-error";
 import { signJwtToken } from "../utils/jwt";
 import logger from "../utils/logger";
-import {
-  LoginSchemaType,
-  RegisterSchemaType,
-} from "../validators/auth.validator";
 
-export const registerService = async (body: RegisterSchemaType) => {
+export const registerService = async (body: RegisterRequest) => {
   const { email } = body;
   const session = await mongoose.startSession();
 
@@ -46,7 +43,7 @@ export const registerService = async (body: RegisterSchemaType) => {
   }
 };
 
-export const loginService = async (body: LoginSchemaType) => {
+export const loginService = async (body: LoginRequest) => {
   const { email, password } = body;
   const user = await UserModel.findOne({ email });
   if (!user)

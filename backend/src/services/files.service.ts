@@ -10,8 +10,9 @@ import { PassThrough, Readable } from "stream";
 import { v4 as uuidv4 } from "uuid";
 import { s3 } from "../config/aws-s3.config";
 import { Env } from "../config/env.config";
-import FileModel, { UploadSourceEnum } from "../models/file.model";
+import FileModel from "../models/file.model";
 import UserModel from "../models/user.model";
+import { UploadSourceEnum } from "../types/database.types";
 import {
   BadRequestException,
   InternalServerError,

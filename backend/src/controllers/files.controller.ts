@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import { UploadSourceEnum } from "../models/file.model";
 import { HTTPSTATUS } from "../config/http.config";
 import {
   deleteFilesService,
@@ -9,11 +8,8 @@ import {
   getFileUrlService,
   uploadFilesService,
 } from "../services/files.service";
-import {
-  deleteFilesSchema,
-  downloadFilesSchema,
-  fileIdSchema,
-} from "../validators/files.validator";
+import { UploadSourceEnum } from "../types/database.types";
+import { fileIdSchema } from "../validators/files.validator";
 
 export const uploadFilesViaWebController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -42,6 +38,8 @@ export const uploadFilesViaApiController = asyncHandler(
 export const getAllFilesController = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = req.user?._id;
+
+    // Validate query parameters
     const filter = {
       keyword: req.query.keyword as string | undefined,
     };
@@ -62,7 +60,9 @@ export const getAllFilesController = asyncHandler(
 export const deleteFilesController = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = req.user?._id;
-    const { fileIds } = deleteFilesSchema.parse(req.body);
+
+    // Body already validated by middleware
+    const { fileIds } = req.body;
 
     const result = await deleteFilesService(userId, fileIds);
 
@@ -76,7 +76,9 @@ export const deleteFilesController = asyncHandler(
 export const downloadFilesController = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = req.user?._id;
-    const { fileIds } = downloadFilesSchema.parse(req.body);
+
+    // Body already validated by middleware
+    const { fileIds } = req.body;
 
     const result = await downloadFilesService(userId, fileIds);
 
@@ -90,7 +92,9 @@ export const downloadFilesController = asyncHandler(
 
 export const publicGetFileUrlController = asyncHandler(
   async (req: Request, res: Response) => {
+    // Validate route parameter
     const fileId = fileIdSchema.parse(req.params.fileId);
+
     const { url, stream, contentType, fileSize } = await getFileUrlService(
       fileId
     );

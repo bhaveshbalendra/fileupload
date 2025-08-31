@@ -1,15 +1,24 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-export const fileIdSchema = z.string().trim().min(1);
+const fileIdSchema = z.string().trim().min(1);
 
 const baseSchema = z.object({
   fileIds: z
-    .array(z.string().length(24, 'Invaild file ID '))
-    .min(1, 'At least one file ID must be provided'),
+    .array(z.string().length(24, "Invaild file ID "))
+    .min(1, "At least one file ID must be provided"),
 });
 
-export const deleteFilesSchema = baseSchema;
-export const downloadFilesSchema = baseSchema;
+const deleteFilesSchema = baseSchema;
+const downloadFilesSchema = baseSchema;
 
-export type DeleteFilesSchemaType = z.infer<typeof deleteFilesSchema>;
-export type DownloadFilesSchemaType = z.infer<typeof downloadFilesSchema>;
+type DeleteFilesSchemaType = z.infer<typeof deleteFilesSchema>;
+type DownloadFilesSchemaType = z.infer<typeof downloadFilesSchema>;
+
+export {
+  baseSchema,
+  deleteFilesSchema,
+  DeleteFilesSchemaType,
+  downloadFilesSchema,
+  DownloadFilesSchemaType,
+  fileIdSchema,
+};

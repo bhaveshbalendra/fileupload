@@ -1,6 +1,7 @@
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
+// Swagger documentation options
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -13,8 +14,11 @@ const swaggerOptions = {
   apis: ["./src/routes/**/*.ts"],
 };
 
+// Swagger documentation generation
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
+// Swagger model validation
 require("swagger-model-validator")(swaggerDocs);
 
+// Export Swagger documentation and UI
 export { swaggerDocs, swaggerUi };

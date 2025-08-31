@@ -2,9 +2,11 @@ import { Request } from "express";
 import multer from "multer";
 import {
   ALLOWED_MIME_TYPES,
-  MAX_FILE_SIZE,
+  FILE_FIELD_NAME,
   MAX_FILES,
-} from "../constant/multer";
+  MULTER_CONFIG,
+  UPLOAD_ERROR_MESSAGES,
+} from "../config/upload.config";
 import { BadRequestException } from "../utils/app-error";
 
 const storage = multer.memoryStorage();
@@ -16,7 +18,9 @@ const fileFilter = (
 ) => {
   if (!ALLOWED_MIME_TYPES.includes(file.mimetype)) {
     return cb(
-      new BadRequestException(`File type ${file.mimetype} not allowed`)
+      new BadRequestException(
+        `${UPLOAD_ERROR_MESSAGES.INVALID_FILE_TYPE}: ${file.mimetype}`
+      )
     );
   }
 
@@ -26,10 +30,7 @@ const fileFilter = (
 const upload = multer({
   storage,
   fileFilter,
-  limits: {
-    files: MAX_FILES,
-    fileSize: MAX_FILE_SIZE,
-  },
+  ...MULTER_CONFIG,
 });
 
-export const multiUpload = upload.array("files", MAX_FILES);
+export const multiUpload = upload.array(FILE_FIELD_NAME, MAX_FILES);

@@ -1,15 +1,5 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
-
-export interface SessionDocument extends Document {
-  _id: Types.ObjectId;
-  userId: Types.ObjectId;
-  userAgent: string;
-  ipAddress: string;
-  isRevoked: boolean;
-  expiresAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import type { SessionDocument } from "../types/database.types";
 
 const sessionSchema = new Schema<SessionDocument>(
   {
