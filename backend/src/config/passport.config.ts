@@ -1,15 +1,12 @@
+import passport from "passport";
 import {
-  Strategy as JwtStrategy,
   ExtractJwt,
+  Strategy as JwtStrategy,
   StrategyOptions,
 } from "passport-jwt";
-import passport from "passport";
-import { Env } from "./env.config";
 import { findByIdUserService } from "../services/user.service";
-
-interface JwtPayload {
-  userId: string;
-}
+import type { JwtPayload } from "../types/auth.types";
+import { Env } from "./env.config";
 
 const options: StrategyOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -36,8 +33,8 @@ passport.use(
   })
 );
 
-passport.serializeUser((user: any, done) => done(null, user));
-passport.deserializeUser((user: any, done) => done(null, user));
+// passport.serializeUser((user: any, done) => done(null, user));
+// passport.deserializeUser((user: any, done) => done(null, user));
 
 export const passportAuthenticateJwt = passport.authenticate("jwt", {
   session: false,

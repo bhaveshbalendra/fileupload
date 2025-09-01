@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Env } from "../config/env.config";
+import logger from "../utils/logger";
 const errorHandler = (
   error: any,
   req: Request,
@@ -12,7 +13,7 @@ const errorHandler = (
   const success = error.success || false;
 
   if (Env.NODE_ENV === "development") {
-    console.error("Error details:", error);
+    logger.error("Error details:", error);
   }
 
   if (error.name === "AppError") {

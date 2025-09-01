@@ -18,7 +18,7 @@ const envConfig = () => ({
   MONGODB_URI: getEnv("MONGODB_URI", ""),
 
   // JWT
-  JWT_SECRET: getEnv("JWT_SECRET", "secert_jwt"),
+  JWT_SECRET: getEnv("JWT_SECRET", "secret_jwt"),
   JWT_EXPIRES_IN: getEnv("JWT_EXPIRES_IN", "1d"),
 
   AWS_ACCESS_KEY: getEnv("AWS_ACCESS_KEY", ""),

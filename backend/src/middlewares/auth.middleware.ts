@@ -6,6 +6,5 @@ export const requireAuth = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.user);
   passportAuthenticateJwt(req, res, next);
 };
