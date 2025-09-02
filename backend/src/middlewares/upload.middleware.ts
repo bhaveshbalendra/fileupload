@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request, Response, NextFunction } from "express";
 import multer from "multer";
 import {
   ALLOWED_MIME_TYPES,
@@ -8,6 +8,7 @@ import {
   UPLOAD_ERROR_MESSAGES,
 } from "../config/upload.config";
 import { BadRequestException } from "../utils/app-error";
+import { Express } from "express";
 
 /**
  * File Upload Middleware using Multer

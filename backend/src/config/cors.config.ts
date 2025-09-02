@@ -16,7 +16,7 @@ const getAllowedOrigins = (): string | string[] => {
 
   // If it contains commas, split into array
   if (origin.includes(",")) {
-    return origin.split(",").map((o) => o.trim());
+    return origin.split(",").map((o: string) => o.trim());
   }
 
   return origin;

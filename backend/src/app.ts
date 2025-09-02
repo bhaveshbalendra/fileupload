@@ -1,7 +1,6 @@
-import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express, { Application } from "express";
+import express, { Application, json, urlencoded } from "express";
 import helmet from "helmet";
 import hpp from "hpp";
 import options from "./config/cors.config";
@@ -20,8 +19,8 @@ const app: Application = express();
 
 app.use(helmet());
 app.use(hpp());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.set("trust proxy", 1);
 

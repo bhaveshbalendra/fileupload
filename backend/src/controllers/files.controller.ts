@@ -10,6 +10,7 @@ import {
 } from "../services/files.service";
 import { UploadSourceEnum } from "../types/database.types";
 import { fileIdSchema } from "../validators/files.validator";
+import { Express } from "express";
 
 export const uploadFilesViaWebController = asyncHandler(
   async (req: Request, res: Response) => {

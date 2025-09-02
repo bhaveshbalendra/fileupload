@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { handleHealthCheck } from "../controllers/healthCheck.controller";
 import { requireAuth } from "../middlewares/auth.middleware";
 
@@ -15,8 +15,7 @@ const router = Router();
  *         description: A successful response
  */
 router.get("/", handleHealthCheck);
-router.get("/me", requireAuth, (_req, res) => {
-  // @ts-ignore
+router.get("/me", requireAuth, (req: Request, res: Response) => {
   return res.json({ ok: true });
 });
 

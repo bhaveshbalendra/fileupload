@@ -22,7 +22,13 @@ class AppError extends Error {
     this.errorCode = errorCode;
     this.success = success ?? false;
     this.name = "AppError";
-    Error.captureStackTrace(this, this.constructor);
+    
+    // Only capture stack trace in development
+    if (typeof Error.captureStackTrace === "function") {
+      Error.captureStackTrace(this, this.constructor);
+    } else {
+      this.stack = (new Error()).stack;
+    }
   }
 }
 

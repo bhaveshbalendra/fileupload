@@ -4,6 +4,7 @@ import { BadRequestException, UnauthorizedException } from "../utils/app-error";
 import logger from "../utils/logger";
 import { MAX_FILE_SIZE, UPLOAD_ERROR_MESSAGES } from "../config/upload.config";
 import { formatBytes } from "../utils/format-byte";
+import { Express } from "express";
 
 /**
  * Storage Availability Middleware

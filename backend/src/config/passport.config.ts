@@ -3,6 +3,7 @@ import {
   ExtractJwt,
   Strategy as JwtStrategy,
   StrategyOptions,
+  VerifiedCallback,
 } from "passport-jwt";
 import { findByIdUserService } from "../services/user.service";
 import type { JwtPayload } from "../types/auth.types";
@@ -16,7 +17,7 @@ const options: StrategyOptions = {
 };
 
 passport.use(
-  new JwtStrategy(options, async (payload: JwtPayload, done) => {
+  new JwtStrategy(options, async (payload: JwtPayload, done: VerifiedCallback) => {
     try {
       if (!payload.userId) {
         return done(null, false);

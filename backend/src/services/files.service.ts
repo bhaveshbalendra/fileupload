@@ -22,6 +22,7 @@ import {
 import { sanitizeFilename } from "../utils/helper";
 import logger from "../utils/logger";
 import archiver = require("archiver");
+import { Express } from "express";
 
 /**
  * Uploads multiple files to AWS S3 and saves metadata to MongoDB
