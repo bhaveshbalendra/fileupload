@@ -24,3 +24,5 @@ _billing.tsx
 *.sln
 *.sw?
 .vercel
+
+.env
