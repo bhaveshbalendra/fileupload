@@ -1,5 +1,5 @@
 // File upload configuration
-export const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
+export const MAX_FILE_SIZE = 200 * 1024; // 200KB per file
 export const MAX_FILES = 10; // per request
 
 // Storage configuration
@@ -11,8 +11,9 @@ export const FILE_FIELD_NAME = "files";
 // Error messages
 export const UPLOAD_ERROR_MESSAGES = {
   INVALID_FILE_TYPE: "File type not allowed",
-  FILE_TOO_LARGE: "File size exceeds maximum limit",
+  FILE_TOO_LARGE: "File size exceeds maximum limit of 200KB",
   TOO_MANY_FILES: "Too many files uploaded",
+  STORAGE_QUOTA_EXCEEDED: "Upload would exceed your 100MB storage limit",
 } as const;
 
 // Allowed MIME types

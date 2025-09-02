@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import StorageModel from "../models/storage.model";
 import { BadRequestException, UnauthorizedException } from "../utils/app-error";
 import logger from "../utils/logger";
+import { MAX_FILE_SIZE, UPLOAD_ERROR_MESSAGES } from "../config/upload.config";
+import { formatBytes } from "../utils/format-byte";
 
 /**
  * Storage Availability Middleware
@@ -9,10 +11,11 @@ import logger from "../utils/logger";
  *
  * Process:
  * 1. Extract uploaded files from request
- * 2. Calculate total file size
- * 3. Validate against user's storage quota (2GB default)
- * 4. Check remaining space after current usage
- * 5. Allow/reject upload based on availability
+ * 2. Validate individual file sizes (200KB max per file)
+ * 3. Calculate total file size
+ * 4. Validate against user's storage quota (100MB default)
+ * 5. Check remaining space after current usage
+ * 6. Allow/reject upload based on availability
  *
  * Features:
  * - Real-time storage usage calculation
@@ -42,16 +45,17 @@ import logger from "../utils/logger";
  * @example Error response when insufficient storage:
  * ```json
  * {
- *   "error": "Insufficient storage. 500MB needed.",
+ *   "error": "Insufficient storage. 25MB needed.",
  *   "code": "INSUFFICIENT_STORAGE"
  * }
  * ```
  *
  * @example Success flow:
- * - Files total: 100MB
- * - User quota: 2GB
- * - Current usage: 1.5GB
- * - Remaining: 500MB
+ * - Files: [file1: 150KB, file2: 100KB]
+ * - Total: 250KB
+ * - User quota: 100MB
+ * - Current usage: 50MB
+ * - Remaining: 50MB
  * - Result: ✅ Upload allowed
  */
 export const CheckStorageAvailability = async (
@@ -67,6 +71,15 @@ export const CheckStorageAvailability = async (
     // Validate that files were actually uploaded
     if (!files || files.length === 0)
       throw new BadRequestException("No file uploaded");
+
+    // Validate individual file sizes
+    for (const file of files) {
+      if (file.size > MAX_FILE_SIZE) {
+        throw new BadRequestException(
+          `File "${file.originalname}" (${formatBytes(file.size)}) exceeds the maximum size limit of ${formatBytes(MAX_FILE_SIZE)}`
+        );
+      }
+    }
 
     // Get authenticated user ID (set by auth middleware)
     const userId = req.user?._id;

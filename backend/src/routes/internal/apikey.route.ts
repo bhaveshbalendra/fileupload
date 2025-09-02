@@ -4,11 +4,12 @@ import {
   deleteApiKeyController,
   getAllApiKeysController,
 } from '../../controllers/apikey.controller';
+import { requireAuth } from '../../middlewares/auth.middleware';
 
 const apikeyRoutes = Router();
 
-apikeyRoutes.post('/create', createApiKeyController);
-apikeyRoutes.get('/all', getAllApiKeysController);
-apikeyRoutes.delete('/:id', deleteApiKeyController);
+apikeyRoutes.post('/create', requireAuth, createApiKeyController);
+apikeyRoutes.get('/all', requireAuth, getAllApiKeysController);
+apikeyRoutes.delete('/:id', requireAuth, deleteApiKeyController);
 
 export default apikeyRoutes;

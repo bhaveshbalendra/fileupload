@@ -16,7 +16,7 @@ import FileModel from "./file.model";
  * Uses a hybrid approach: metadata in MongoDB, files in AWS S3
  *
  * Features:
- * - 2GB default storage quota per user
+ * - 100MB default storage quota per user
  * - Real-time usage calculation from file records
  * - Upload validation before processing
  * - Detailed storage metrics reporting
@@ -28,9 +28,9 @@ import FileModel from "./file.model";
  * - Formatted error messages for user feedback
  */
 
-// Default storage quota per user: 2GB
+// Default storage quota per user: 100MB
 // Can be customized per user by updating their storage document
-export const STORAGE_QUOTA = 2 * 1024 * 1024 * 1024; //2GB
+export const STORAGE_QUOTA = 100 * 1024 * 1024; // 100MB
 
 /**
  * Static methods interface for StorageModel
@@ -66,7 +66,7 @@ interface StorageModelType extends Model<StorageDocument>, StorageStatics {}
  *
  * Schema structure:
  * - userId: Reference to User document
- * - storageQuota: Maximum allowed storage in bytes (default: 2GB)
+ * - storageQuota: Maximum allowed storage in bytes (default: 100MB)
  * - createdAt/updatedAt: Automatic timestamps
  *
  * Validation:
@@ -83,7 +83,7 @@ const StorageSchema = new Schema<StorageDocument, StorageModelType>(
     storageQuota: {
       // Total storage allowed (in bytes)
       type: Number,
-      default: STORAGE_QUOTA, // 2GB default
+      default: STORAGE_QUOTA, // 100MB default
       min: [0, "Storage quota cannot be negative"],
     },
   },
@@ -208,7 +208,7 @@ StorageSchema.statics = {
  * ```typescript
  * const storage = new StorageModel({
  *   userId: user._id,
- *   storageQuota: 2 * 1024 * 1024 * 1024 // 2GB
+ *   storageQuota: 100 * 1024 * 1024 // 100MB
  * });
  * await storage.save();
  * ```

@@ -4,7 +4,9 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only --files src/server.ts"
+    "dev": "ts-node-dev --respawn --transpile-only --files src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",
